@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch & Learn — английский по сериалам</title>
+  <meta name="theme-color" content="#1A1A3E">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF2E63'/><text x='50' y='54' font-size='58' text-anchor='middle' dominant-baseline='middle'>🎬</text></svg>">
+  <style>
+    /* ============ СБРОС ============ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* ============ ПЕРЕМЕННЫЕ ============ */
+    :root {
+      --bg-dark: #1A1A3E;
+      --bg-dark-2: #212147;
+      --bg-card: rgba(33, 33, 71, 0.65);
+      --accent-pink: #FF2E63;
+      --accent-cyan: #08D9D6;
+      --text-white: #FFFFFF;
+      --text-muted: rgba(255, 255, 255, 0.72);
+      --border-soft: rgba(8, 217, 214, 0.18);
+      --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ============ БАЗА ============ */
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-white);
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Лёгкая ретро-сетка на фоне */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(8, 217, 214, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(8, 217, 214, 0.06) 1px, transparent 1px);
+      background-size: 70px 70px;
+      pointer-events: none;
+      z-index: 0;
+      mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+    }
+
+    /* Мягкий световой акцент */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(700px, 90vw);
+      height: min(700px, 90vw);
+      background: radial-gradient(circle, rgba(255, 46, 99, 0.12) 0%, rgba(8, 217, 214, 0.05) 40%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(20px);
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============ НАВИГАЦИЯ ============ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(26, 26, 62, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(8, 217, 214, 0.18);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-white);
+    }
+
+    .logo-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #fff;
+      flex-shrink: 0;
+      box-shadow: 0 0 14px rgba(255, 46, 99, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.98rem;
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-cyan);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-white);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+      box-shadow: 0 0 8px rgba(8, 217, 214, 0.6);
+    }
+
+    /* ============ СЕКЦИИ ============ */
+    section {
+      padding: 90px 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 3.6vw, 2.3rem);
+      font-weight: 800;
+      margin-bottom: 16px;
+      text-align: center;
+      letter-spacing: -0.01em;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .section-title .title-icon {
+      font-size: 1.1em;
+      line-height: 1;
+      filter: drop-shadow(0 0 8px rgba(8, 217, 214, 0.5));
+    }
+
+    .section-title .accent {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 18px rgba(8, 217, 214, 0.4);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 640px;
+      margin: 0 auto 56px;
+    }
+
+    /* ============ HERO ============ */
+    .hero {
+      padding: 105px 0 95px;
+      text-align: center;
+    }
+
+    .hero-content {
+      max-width: 830px;
+      margin: 0 auto;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      padding: 8px 20px;
+      background: rgba(8, 217, 214, 0.06);
+      border: 1px solid rgba(8, 217, 214, 0.3);
+      border-radius: 40px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 5.4vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      margin-bottom: 22px;
+      color: var(--text-white);
+      text-shadow: 0 0 22px rgba(255, 46, 99, 0.28);
+    }
+
+    .hero h1 .accent {
+      color: var(--accent-cyan);
+      text-shadow: 0 0 22px rgba(8, 217, 214, 0.45);
+    }
+
+    .hero p {
+      font-size: clamp(1.02rem, 1.7vw, 1.15rem);
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto 40px;
+    }
+
+    /* Кнопка-ссылка (переход к разделу) */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-pink);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 16px 42px;
+      border-radius: 50px;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border: 2px solid var(--accent-pink);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(255, 46, 99, 0.35), 0 0 18px rgba(255, 46, 99, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-primary:hover {
+      background: #e02655;
+      transform: translateY(-3px);
+      border-color: var(--accent-cyan);
+      box-shadow:
+        0 10px 28px rgba(255, 46, 99, 0.5),
+        0 0 22px rgba(8, 217, 214, 0.4);
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    /* ============ О ПРОЕКТЕ ============ */
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+    }
+
+    .about-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 38px 30px;
+      border-radius: 18px;
+      border: 1px solid var(--border-soft);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: var(--shadow-card);
+    }
+
+    .about-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 46, 99, 0.45);
+      box-shadow:
+        var(--shadow-card),
+        0 0 22px rgba(255, 46, 99, 0.28);
+    }
+
+    .about-card .icon {
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: rgba(255, 46, 99, 0.1);
+      border: 1px solid rgba(255, 46, 99, 0.28);
+      line-height: 1;
+    }
+
+    .about-card h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--accent-cyan);
+    }
+
+    .about-card p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    /* ============ СЕРИАЛЫ ============ */
+    .series-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .series-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: 30px 26px;
+      border: 1px solid var(--border-soft);
+      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .series-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 0;
+      background: linear-gradient(180deg, var(--accent-pink), var(--accent-cyan));
+      transition: height 0.4s ease;
+    }
+
+    .series-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(8, 217, 214, 0.4);
+      box-shadow:
+        var(--shadow-card),
+        0 0 22px rgba(8, 217, 214, 0.25);
+    }
+
+    .series-card:hover::before {
+      height: 100%;
+    }
+
+    .series-icon {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: rgba(8, 217, 214, 0.08);
+      border: 1px solid rgba(8, 217, 214, 0.28);
+      border-radius: 13px;
+      line-height: 1;
+    }
+
+    .series-card h3 {
+      font-size: 1.22rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-white);
+    }
+
+    .series-level {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      padding: 5px 13px;
+      border-radius: 30px;
+      color: var(--accent-pink);
+      background: rgba(255, 46, 99, 0.1);
+      border: 1px solid rgba(255, 46, 99, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .series-tip {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: auto;
+      line-height: 1.55;
+      padding-left: 13px;
+      border-left: 2px solid var(--accent-cyan);
+      opacity: 0.95;
+    }
+
+    /* ============ СОВЕТЫ ============ */
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 22px;
+    }
+
+    .tip-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 18px;
+      padding: 32px 24px;
+      border: 1px solid var(--border-soft);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      text-align: left;
+      position: relative;
+      box-shadow: var(--shadow-card);
+    }
+
+    .tip-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 46, 99, 0.4);
+      box-shadow:
+        var(--shadow-card),
+        0 0 20px rgba(255, 46, 99, 0.25);
+    }
+
+    .tip-card .tip-number {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+      color: var(--accent-pink);
+      opacity: 0.9;
+    }
+
+    .tip-icon {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 11px;
+      background: rgba(8, 217, 214, 0.08);
+      border: 1px solid rgba(8, 217, 214, 0.25);
+      line-height: 1;
+    }
+
+    .tip-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-white);
+    }
+
+    .tip-card p {
+      font-size: 0.93rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ============ ФОРМА СВЯЗИ ============ */
+    .contact-section {
+      padding-bottom: 110px;
+    }
+
+    .contact-form-wrapper {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--bg-dark-2);
+      padding: 48px 44px;
+      border-radius: 20px;
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-card);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-form-wrapper::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, rgba(255, 46, 99, 0.14) 0%, transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+
+    .contact-form {
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-form .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .contact-form label {
+      display: block;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(26, 26, 62, 0.7);
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      color: var(--text-white);
+      font-size: 0.98rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 14px rgba(8, 217, 214, 0.3);
+    }
+
+    .contact-form textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    /* Кнопка-действие (submit) */
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--accent-pink);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 16px 34px;
+      border-radius: 50px;
+      border: 2px solid var(--accent-pink);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      width: 100%;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(255, 46, 99, 0.3);
+      margin-top: 8px;
+    }
+
+    .btn-submit:hover {
+      background: #e02655;
+      transform: translateY(-3px);
+      border-color: var(--accent-cyan);
+      box-shadow:
+        0 12px 28px rgba(255, 46, 99, 0.5),
+        0 0 22px rgba(8, 217, 214, 0.4);
+    }
+
+    .btn-submit:active {
+      transform: translateY(-1px);
+    }
+
+    /* ============ ФУТЕР ============ */
+    .footer {
+      text-align: center;
+      padding: 30px 0;
+      border-top: 1px solid rgba(8, 217, 214, 0.15);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============ АДАПТИВНОСТЬ ============ */
+    @media (max-width: 900px) {
+      .nav-links {
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        padding: 0 18px;
+      }
+
+      section {
+        padding: 65px 0;
+      }
+
+      .hero {
+        padding: 75px 0 65px;
+      }
+
+      .nav-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .nav-links {
+        justify-content: center;
+        gap: 16px;
+      }
+
+      .nav-links a {
+        font-size: 0.9rem;
+      }
+
+      .contact-form-wrapper {
+        padding: 30px 22px;
+      }
+
+      .section-subtitle {
+        margin-bottom: 40px;
+      }
+
+      .about-card,
+      .series-card,
+      .tip-card {
+        padding: 26px 22px;
+      }
+
+      .section-title {
+        gap: 8px;
+      }
+
+      .btn-primary {
+        padding: 14px 32px;
+        font-size: 0.95rem;
+      }
+
+      .btn-submit {
+        padding: 15px 28px;
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============ НАВИГАЦИЯ ============ -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo">
+        <span class="logo-icon">🎬</span>
+        Watch & Learn
+      </div>
+      <ul class="nav-links">
+        <li><a href="#about">О проекте</a></li>
+        <li><a href="#series">Сериалы</a></li>
+        <li><a href="#tips">Советы</a></li>
+        <li><a href="#contacts">Свяжитесь с нами</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="container hero-content">
+      <span class="hero-tag">🎟️ Английский по сериалам</span>
+      <h1>Смотри сериалы — <span class="accent">говори свободно</span></h1>
+      <p>Погружайся в живую речь, запоминай фразы в контексте и учи английский с удовольствием — без скучных учебников.</p>
+      <a href="#series" class="btn-primary">🍿 Подобрать сериал</a>
+    </div>
+  </section>
+
+  <!-- ============ О ПРОЕКТЕ ============ -->
+  <section id="about">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="title-icon">🎯</span>
+        Почему это <span class="accent">работает</span>
+      </h2>
+      <p class="section-subtitle">Сериалы дают то, чего не хватает учебникам: живой контекст, эмоции и настоящую речь.</p>
+
+      <div class="about-grid">
+        <div class="about-card">
+          <div class="icon">🎧</div>
+          <h3>Живая речь</h3>
+          <p>Ты слышишь настоящие акценты, сленг и интонации — английский становится естественной частью восприятия.</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">🧠</div>
+          <h3>Контекст запоминается</h3>
+          <p>Слова и фразы врезаются в память вместе с сюжетом и эмоциями героев — эффект гораздо сильнее зубрёжки.</p>
+        </div>
+        <div class="about-card">
+          <div class="icon">🔥</div>
+          <h3>Мотивация и интерес</h3>
+          <p>Смотреть любимый сериал — это удовольствие. А значит, ты будешь возвращаться к английскому снова.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ СЕРИАЛЫ ============ -->
+  <section id="series">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="title-icon">🎬</span>
+        Подборка <span class="accent">сериалов</span>
+      </h2>
+      <p class="section-subtitle">Шесть проверенных сериалов по шкале CEFR — от начального до продвинутого уровня.</p>
+
+      <div class="series-grid">
+        <div class="series-card">
+          <div class="series-icon">🐣</div>
+          <h3>Peppa Pig</h3>
+          <div class="series-level">📘 A1 · Beginner</div>
+          <p class="series-tip">Медленная, чёткая речь и простейшая лексика. Идеальный старт для самых первых шагов.</p>
+        </div>
+
+        <div class="series-card">
+          <div class="series-icon">☕</div>
+          <h3>Friends</h3>
+          <div class="series-level">📗 A2 · Elementary</div>
+          <p class="series-tip">Простой бытовой юмор и понятные диалоги. Отличный переход к живому английскому.</p>
+        </div>
+
+        <div class="series-card">
+          <div class="series-icon">👽</div>
+          <h3>Stranger Things</h3>
+          <div class="series-level">📙 B1 · Intermediate</div>
+          <p class="series-tip">Ностальгия 80-х, диалоги подростков и научная фантастика. Затягивает и мотивирует.</p>
+        </div>
+
+        <div class="series-card">
+          <div class="series-icon">👮</div>
+          <h3>Brooklyn Nine-Nine</h3>
+          <div class="series-level">📙 B2 · Upper-Int</div>
+          <p class="series-tip">Быстрый темп, шутки и профессиональная лексика. Отлично тренирует аудирование.</p>
+        </div>
+
+        <div class="series-card">
+          <div class="series-icon">🔍</div>
+          <h3>Sherlock (BBC)</h3>
+          <div class="series-level">📕 C1 · Advanced</div>
+          <p class="series-tip">Быстрая речь, сложные термины и британский акцент. Для тех, кто хочет вызов.</p>
+        </div>
+
+        <div class="series-card">
+          <div class="series-icon">👑</div>
+          <h3>The Crown</h3>
+          <div class="series-level">📕 C2 · Proficiency</div>
+          <p class="series-tip">Королевский английский, исторический контекст и богатый словарный запас. Для тех, кто хочет достичь совершенства.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ СОВЕТЫ ============ -->
+  <section id="tips">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="title-icon">💡</span>
+        Как смотреть <span class="accent">с пользой</span>
+      </h2>
+      <p class="section-subtitle">Четыре простых правила, которые превратят просмотр в эффективную практику.</p>
+
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-number">01</div>
+          <div class="tip-icon">📝</div>
+          <h3>Смотри с субтитрами</h3>
+          <p>Сначала английские, потом отключай — так ты связываешь звук и написание.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">02</div>
+          <div class="tip-icon">🗣️</div>
+          <h3>Повторяй вслух</h3>
+          <p>Пауза и повтор — имитация акцента и интонации ускоряет прогресс.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">03</div>
+          <div class="tip-icon">📓</div>
+          <h3>Записывай слова</h3>
+          <p>Выписывай незнакомые выражения и возвращайся к ним через день.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-number">04</div>
+          <div class="tip-icon">⏱️</div>
+          <h3>Смотри по 20–30 минут</h3>
+          <p>Короткие сессии каждый день эффективнее, чем редкие марафоны.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ СВЯЖИТЕСЬ С НАМИ ============ -->
+  <section id="contacts" class="contact-section">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="title-icon">✉️</span>
+        Свяжитесь <span class="accent">с нами</span>
+      </h2>
+      <p class="section-subtitle">Есть вопрос, идея или любимый сериал, которого нет в подборке? Напишите нам.</p>
+
+      <div class="contact-form-wrapper">
+        <form class="contact-form" action="#" method="post">
+          <div class="form-group">
+            <label for="name">Ваше имя</label>
+            <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Сообщение</label>
+            <textarea id="message" name="message" placeholder="Расскажите, что вас интересует..." required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">📨 Отправить</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ФУТЕР ============ -->
+  <footer class="footer">
+    <div class="container">
+      © 2025 Watch & Learn — учи английский с удовольствием. 🎬
+    </div>
+  </footer>
+
+</body>
+</html>
