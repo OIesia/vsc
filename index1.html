@@ -168,6 +168,17 @@
       box-shadow: 0 0 8px rgba(8, 217, 214, 0.6);
     }
 
+    /* Активный пункт меню (scroll-spy) */
+    .nav-links a.active {
+      color: var(--accent-pink);
+    }
+
+    .nav-links a.active::after {
+      width: 100%;
+      background: var(--accent-pink);
+      box-shadow: 0 0 8px rgba(255, 46, 99, 0.6);
+    }
+
     /* ============ СЕКЦИИ ============ */
     section {
       padding: 90px 0;
@@ -399,6 +410,38 @@
 
     .series-card:hover::before {
       height: 100%;
+    }
+
+    /* Постер сериала в верхней части карточки */
+    .series-poster {
+      position: relative;
+      width: calc(100% + 52px);
+      margin: -30px -26px 24px;
+      height: 175px;
+      border-bottom: 1px solid var(--border-soft);
+      overflow: hidden;
+    }
+
+    .series-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s ease, filter 0.45s ease;
+    }
+
+    /* Мягкий градиент под постером для плавного перехода в фон карточки */
+    .series-poster::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 58%, rgba(26, 26, 62, 0.9) 100%);
+      pointer-events: none;
+    }
+
+    .series-card:hover .series-poster img {
+      transform: scale(1.05);
+      filter: brightness(1.08);
     }
 
     .series-icon {
@@ -690,6 +733,12 @@
         padding: 26px 22px;
       }
 
+      .series-poster {
+        width: calc(100% + 44px);
+        margin: -26px -22px 20px;
+        height: 150px;
+      }
+
       .section-title {
         gap: 8px;
       }
@@ -774,6 +823,7 @@
 
       <div class="series-grid">
         <div class="series-card">
+          <div class="series-poster"><img src="pp.jpg" alt="Peppa Pig — постер сериала"></div>
           <div class="series-icon">🐣</div>
           <h3>Peppa Pig</h3>
           <div class="series-level">📘 A1 · Beginner</div>
@@ -781,6 +831,7 @@
         </div>
 
         <div class="series-card">
+          <div class="series-poster"><img src="fr.jpg" alt="Friends — постер сериала"></div>
           <div class="series-icon">☕</div>
           <h3>Friends</h3>
           <div class="series-level">📗 A2 · Elementary</div>
@@ -788,6 +839,7 @@
         </div>
 
         <div class="series-card">
+          <div class="series-poster"><img src="st.png" alt="Stranger Things — постер сериала"></div>
           <div class="series-icon">👽</div>
           <h3>Stranger Things</h3>
           <div class="series-level">📙 B1 · Intermediate</div>
@@ -795,6 +847,7 @@
         </div>
 
         <div class="series-card">
+          <div class="series-poster"><img src="br.jpg" alt="Brooklyn Nine-Nine — постер сериала"></div>
           <div class="series-icon">👮</div>
           <h3>Brooklyn Nine-Nine</h3>
           <div class="series-level">📙 B2 · Upper-Int</div>
@@ -802,6 +855,7 @@
         </div>
 
         <div class="series-card">
+          <div class="series-poster"><img src="sh.jpg" alt="Sherlock (BBC) — постер сериала"></div>
           <div class="series-icon">🔍</div>
           <h3>Sherlock (BBC)</h3>
           <div class="series-level">📕 C1 · Advanced</div>
@@ -809,6 +863,7 @@
         </div>
 
         <div class="series-card">
+          <div class="series-poster"><img src="cr.jpg" alt="The Crown — постер сериала"></div>
           <div class="series-icon">👑</div>
           <h3>The Crown</h3>
           <div class="series-level">📕 C2 · Proficiency</div>
@@ -891,6 +946,49 @@
       © 2025 Watch & Learn — учи английский с удовольствием. 🎬
     </div>
   </footer>
+
+  <!-- ============ SCROLL-SPY: подсветка активного раздела ============ -->
+  <script>
+    (function () {
+      var sections = document.querySelectorAll('section[id]');
+      var navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+      // Плавная прокрутка к разделу при клике по пункту меню
+      navLinks.forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var targetId = link.getAttribute('href');
+          if (targetId && targetId.length > 1) {
+            var target = document.querySelector(targetId);
+            if (target) {
+              e.preventDefault();
+              target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              history.replaceState(null, '', targetId);
+            }
+          }
+        });
+      });
+
+      // Определяем раздел, находящийся в зоне видимости экрана
+      function setActiveLink() {
+        var currentId = '';
+        sections.forEach(function (section) {
+          var rect = section.getBoundingClientRect();
+          // Раздел активен, если его верхняя граница выше 40% высоты экрана
+          if (rect.top <= window.innerHeight * 0.4) {
+            currentId = section.id;
+          }
+        });
+
+        navLinks.forEach(function (link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + currentId);
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink, { passive: true });
+      window.addEventListener('resize', setActiveLink);
+      setActiveLink();
+    })();
+  </script>
 
 </body>
 </html>
