@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Watch & Learn — английский по сериалам</title>
-  <meta name="theme-color" content="#1A1A3E">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23FF2E63'/><text x='50' y='54' font-size='58' text-anchor='middle' dominant-baseline='middle'>🎬</text></svg>">
+  <meta name="theme-color" content="#0B0B0F">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23E50914'/><text x='50' y='54' font-size='58' text-anchor='middle' dominant-baseline='middle'>🎬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     /* ============ СБРОС ============ */
     *,
@@ -20,68 +23,118 @@
       scroll-behavior: smooth;
     }
 
-    /* ============ ПЕРЕМЕННЫЕ ============ */
+    /* ============ ДИЗАЙН-СИСТЕМА ============ */
     :root {
-      --bg-dark: #1A1A3E;
-      --bg-dark-2: #212147;
-      --bg-card: rgba(33, 33, 71, 0.65);
-      --accent-pink: #FF2E63;
-      --accent-cyan: #08D9D6;
+      /* Цвета (строгая красно-чёрная палитра) */
+      --bg-dark: #000000;
+      --bg-dark-2: #222222;
+      --bg-card: #111111;
+      --accent-red: #CC0000;
+      --accent-hover: #E50914;
       --text-white: #FFFFFF;
-      --text-muted: rgba(255, 255, 255, 0.72);
-      --border-soft: rgba(8, 217, 214, 0.18);
-      --shadow-card: 0 12px 30px rgba(0, 0, 0, 0.4);
+      --text-muted: #A0A0A0;
+      --border-color: #333333;
+
+      /* Вспомогательные оттенки */
+      --accent-soft: rgba(204, 0, 0, 0.12);
+      --border-soft: rgba(255, 255, 255, 0.1);
+
+      /* Скругления */
+      --radius-sm: 12px;
+      --radius-card: 18px;
+      --radius-btn: 28px;
+      --radius-pill: 999px;
+
+      /* Тени отключены — строгий плоский стиль */
+      --shadow-card: none;
+      --shadow-hover: none;
+      --shadow-btn: none;
+
+      /* Отступы */
+      --section-pad: 96px;
+      --section-pad-mobile: 64px;
+      --gap: 24px;
+
+      /* Типографика */
+      --font-display: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-body: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     }
 
     /* ============ БАЗА ============ */
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
-      background-color: var(--bg-dark);
+      font-family: var(--font-body);
+      font-weight: 400;
+      /* Строго чёрный фон: без градиентов и фоновых изображений */
+      background-color: #000000;
       color: var(--text-white);
-      line-height: 1.65;
+      line-height: 1.72;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       position: relative;
       min-height: 100vh;
     }
 
-    /* Лёгкая ретро-сетка на фоне */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(8, 217, 214, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(8, 217, 214, 0.06) 1px, transparent 1px);
-      background-size: 70px 70px;
-      pointer-events: none;
-      z-index: 0;
-      mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+    ::selection {
+      background: rgba(229, 9, 20, 0.35);
+      color: #fff;
     }
 
-    /* Мягкий световой акцент */
-    body::after {
-      content: '';
-      position: fixed;
-      top: -20vh;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(700px, 90vw);
-      height: min(700px, 90vw);
-      background: radial-gradient(circle, rgba(255, 46, 99, 0.12) 0%, rgba(8, 217, 214, 0.05) 40%, transparent 70%);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 0;
-      filter: blur(20px);
+    /* Общая типографика: заголовки выразительные, абзацы спокойные */
+    h1,
+    h2,
+    h3 {
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    p {
+      letter-spacing: 0.01em;
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 1160px;
       margin: 0 auto;
       padding: 0 24px;
       position: relative;
       z-index: 2;
+    }
+
+    /* ============ ЕДИНЫЙ НАБОР ИКОНОК (LUCIDE) ============ */
+    /* Иконки строчные, 24x24, толщина линии 2 — единая стилистика */
+    .lucide {
+      width: 1em;
+      height: 1em;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: inline-block;
+      vertical-align: -0.125em;
+      flex-shrink: 0;
+    }
+
+    /* Согласованные размеры иконок по контексту */
+    .logo-icon .lucide { width: 19px; height: 19px; }
+    .hero-tag .lucide { width: 14px; height: 14px; }
+    .title-icon .lucide { width: 24px; height: 24px; }
+    .about-card .icon .lucide { width: 26px; height: 26px; }
+    .tip-icon .lucide { width: 20px; height: 20px; }
+    .btn-primary .lucide,
+    .btn-submit .lucide { width: 18px; height: 18px; }
+    .footer .lucide { width: 15px; height: 15px; vertical-align: -0.2em; color: var(--accent-red); }
+
+    /* Заметный индикатор клавиатурного фокуса у всех ссылок и кнопок */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(229, 9, 20, 0.65);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+
+    /* Отступ якорей с учётом прилипающей шапки */
+    section[id] {
+      scroll-margin-top: 88px;
     }
 
     /* ============ НАВИГАЦИЯ ============ */
@@ -89,12 +142,9 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(26, 26, 62, 0.85);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      padding: 16px 0;
-      border-bottom: 1px solid rgba(8, 217, 214, 0.18);
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      background: #000000;
+      padding: 12px 0;
+      border-bottom: 1px solid #333333;
     }
 
     .nav-container {
@@ -108,43 +158,44 @@
     .logo {
       font-size: 1.35rem;
       font-weight: 800;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
       display: flex;
       align-items: center;
       gap: 10px;
+      white-space: nowrap;
       color: var(--text-white);
     }
 
     .logo-icon {
       width: 34px;
       height: 34px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan));
+      border-radius: 6px;
+      background: var(--accent-red);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: #fff;
       flex-shrink: 0;
-      box-shadow: 0 0 14px rgba(255, 46, 99, 0.5);
     }
 
     .nav-links {
       display: flex;
-      gap: 28px;
+      gap: 30px;
       list-style: none;
       align-items: center;
       flex-wrap: wrap;
     }
 
+    /* Обычные ссылки — светлый текст */
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-weight: 500;
-      font-size: 0.98rem;
+      font-weight: 600;
+      font-size: 0.9rem;
       padding: 6px 0;
       position: relative;
-      transition: color 0.25s ease;
+      transition: color 0.3s ease;
     }
 
     .nav-links a::after {
@@ -153,81 +204,102 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 2px;
-      background: var(--accent-cyan);
-      border-radius: 2px;
+      height: 1px;
+      background: var(--accent-red);
       transition: width 0.3s ease;
     }
 
     .nav-links a:hover {
-      color: var(--text-white);
+      color: var(--accent-red);
     }
 
     .nav-links a:hover::after {
       width: 100%;
-      box-shadow: 0 0 8px rgba(8, 217, 214, 0.6);
     }
 
-    /* Активный пункт меню (scroll-spy) */
+    /* Видимый индикатор клавиатурного фокуса в навигации */
+    .nav-links a:focus-visible {
+      outline: 2px solid var(--accent-red);
+      outline-offset: 6px;
+      border-radius: 4px;
+    }
+
+    /* Активный пункт меню (scroll-spy): красный с тонким подчёркиванием */
     .nav-links a.active {
-      color: var(--accent-pink);
+      color: var(--accent-red);
     }
 
     .nav-links a.active::after {
       width: 100%;
-      background: var(--accent-pink);
-      box-shadow: 0 0 8px rgba(255, 46, 99, 0.6);
+      background: var(--accent-red);
     }
 
     /* ============ СЕКЦИИ ============ */
     section {
-      padding: 90px 0;
+      padding: var(--section-pad) 0;
       position: relative;
       z-index: 2;
     }
 
     .section-title {
-      font-size: clamp(1.7rem, 3.6vw, 2.3rem);
-      font-weight: 800;
+      font-size: clamp(2.5rem, 5.5vw, 4.2rem);
+      font-weight: 900;
+      line-height: 1.05;
       margin-bottom: 16px;
       text-align: center;
-      letter-spacing: -0.01em;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
       color: var(--text-white);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
     }
 
     .section-title .title-icon {
-      font-size: 1.1em;
+      font-size: 1.05em;
       line-height: 1;
-      filter: drop-shadow(0 0 8px rgba(8, 217, 214, 0.5));
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      background: var(--accent-red);
+      border: none;
+      color: #fff;
+      flex-shrink: 0;
     }
 
     .section-title .accent {
-      color: var(--accent-cyan);
-      text-shadow: 0 0 18px rgba(8, 217, 214, 0.4);
+      color: var(--accent-red);
     }
 
     .section-subtitle {
       text-align: center;
       color: var(--text-muted);
       font-size: 1.05rem;
+      line-height: 1.7;
+      letter-spacing: 0.005em;
       max-width: 640px;
-      margin: 0 auto 56px;
+      margin: 0 auto 60px;
     }
 
     /* ============ HERO ============ */
     .hero {
-      padding: 105px 0 95px;
+      padding: 104px 0 96px;
       text-align: center;
+      position: relative;
+      /* Сплошной тёмный фон: без фонового изображения */
+      background: var(--bg-dark);
     }
 
     .hero-content {
-      max-width: 830px;
+      max-width: 800px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     .hero-tag {
@@ -236,36 +308,38 @@
       gap: 8px;
       font-size: 0.8rem;
       font-weight: 600;
-      letter-spacing: 2px;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      color: var(--accent-cyan);
-      padding: 8px 20px;
-      background: rgba(8, 217, 214, 0.06);
-      border: 1px solid rgba(8, 217, 214, 0.3);
-      border-radius: 40px;
-      margin-bottom: 28px;
+      color: var(--accent-red);
+      padding: 8px 18px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(229, 9, 20, 0.35);
+      border-radius: var(--radius-pill);
+      margin-bottom: 30px;
     }
 
     .hero h1 {
-      font-size: clamp(2.1rem, 5.4vw, 3.5rem);
-      font-weight: 800;
-      line-height: 1.18;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 900;
+      line-height: 1.05;
       letter-spacing: -0.02em;
-      margin-bottom: 22px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
       color: var(--text-white);
-      text-shadow: 0 0 22px rgba(255, 46, 99, 0.28);
+      overflow-wrap: break-word;
+      text-wrap: balance;
     }
 
     .hero h1 .accent {
-      color: var(--accent-cyan);
-      text-shadow: 0 0 22px rgba(8, 217, 214, 0.45);
+      color: var(--accent-red);
     }
 
     .hero p {
-      font-size: clamp(1.02rem, 1.7vw, 1.15rem);
+      font-size: clamp(1.06rem, 1.6vw, 1.17rem);
+      line-height: 1.7;
       color: var(--text-muted);
       max-width: 620px;
-      margin: 0 auto 40px;
+      margin: 0 auto 42px;
     }
 
     /* Кнопка-ссылка (переход к разделу) */
@@ -273,153 +347,149 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      background: var(--accent-pink);
+      background: var(--accent-red);
       color: #fff;
-      font-weight: 700;
-      font-size: 1rem;
-      padding: 16px 42px;
-      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 15px 34px;
+      border-radius: 4px;
       text-decoration: none;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      border: 2px solid var(--accent-pink);
+      border: none;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 24px rgba(255, 46, 99, 0.35), 0 0 18px rgba(255, 46, 99, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
-      transition: left 0.5s;
+      transition: background 0.3s ease, transform 0.25s ease;
     }
 
     .btn-primary:hover {
-      background: #e02655;
-      transform: translateY(-3px);
-      border-color: var(--accent-cyan);
-      box-shadow:
-        0 10px 28px rgba(255, 46, 99, 0.5),
-        0 0 22px rgba(8, 217, 214, 0.4);
+      background: var(--accent-hover);
+      transform: translateY(-2px);
     }
 
-    .btn-primary:hover::before {
-      left: 100%;
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    /* Второстепенная кнопка — тёмная с серой границей */
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #222222;
+      color: var(--text-white);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 32px;
+      border-radius: 4px;
+      border: 1px solid #444444;
+      text-decoration: none;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.42);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     /* ============ О ПРОЕКТЕ ============ */
+    /* Сплошной тёмный фон секции: картинка флага не просвечивает — остаётся только текст */
+    #about {
+      background: var(--bg-dark);
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
+      gap: var(--gap);
     }
 
     .about-card {
       background: var(--bg-card);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      padding: 38px 30px;
-      border-radius: 18px;
-      border: 1px solid var(--border-soft);
-      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-      box-shadow: var(--shadow-card);
+      padding: 36px 30px;
+      border-radius: 6px;
+      border: 1px solid #333333;
+      transition: transform 0.3s ease, border-color 0.3s ease;
     }
 
     .about-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 46, 99, 0.45);
-      box-shadow:
-        var(--shadow-card),
-        0 0 22px rgba(255, 46, 99, 0.28);
+      transform: translateY(-4px);
+      border-color: var(--accent-red);
     }
 
     .about-card .icon {
-      font-size: 1.6rem;
-      margin-bottom: 18px;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 56px;
-      height: 56px;
+      width: 54px;
+      height: 54px;
       border-radius: 14px;
-      background: rgba(255, 46, 99, 0.1);
-      border: 1px solid rgba(255, 46, 99, 0.28);
+      background: var(--accent-soft);
+      border: 1px solid rgba(229, 9, 20, 0.25);
+      color: var(--accent-red);
       line-height: 1;
     }
 
     .about-card h3 {
       font-size: 1.18rem;
       font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
       margin-bottom: 12px;
-      color: var(--accent-cyan);
+      color: var(--text-white);
     }
 
     .about-card p {
       color: var(--text-muted);
-      font-size: 0.98rem;
+      font-size: 0.95rem;
+      line-height: 1.72;
     }
 
     /* ============ СЕРИАЛЫ ============ */
+    /* Сетка: 3 колонки на десктопе, 2 на планшете, 1 на мобильных */
     .series-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
     }
 
     .series-card {
       background: var(--bg-card);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: 18px;
-      padding: 30px 26px;
-      border: 1px solid var(--border-soft);
-      transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+      border-radius: 6px;
+      border: 1px solid #333333;
+      transition: transform 0.35s ease, border-color 0.35s ease;
       display: flex;
       flex-direction: column;
       height: 100%;
       position: relative;
       overflow: hidden;
-      box-shadow: var(--shadow-card);
-    }
-
-    .series-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 3px;
-      height: 0;
-      background: linear-gradient(180deg, var(--accent-pink), var(--accent-cyan));
-      transition: height 0.4s ease;
     }
 
     .series-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(8, 217, 214, 0.4);
-      box-shadow:
-        var(--shadow-card),
-        0 0 22px rgba(8, 217, 214, 0.25);
+      transform: translateY(-4px);
+      border-color: var(--accent-red);
     }
 
-    .series-card:hover::before {
-      height: 100%;
-    }
-
-    /* Постер сериала в верхней части карточки */
+    /* Постер сериала: единый размер 16:9, без искажений */
     .series-poster {
       position: relative;
-      width: calc(100% + 52px);
-      margin: -30px -26px 24px;
-      height: 175px;
-      border-bottom: 1px solid var(--border-soft);
+      aspect-ratio: 16 / 9;
       overflow: hidden;
+      border-radius: 6px 6px 0 0;
+      background: var(--bg-dark-2);
     }
 
     .series-poster img {
@@ -427,163 +497,159 @@
       height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.45s ease, filter 0.45s ease;
-    }
-
-    /* Мягкий градиент под постером для плавного перехода в фон карточки */
-    .series-poster::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, transparent 58%, rgba(26, 26, 62, 0.9) 100%);
-      pointer-events: none;
+      transition: transform 0.5s ease;
     }
 
     .series-card:hover .series-poster img {
       transform: scale(1.05);
-      filter: brightness(1.08);
     }
 
-    .series-icon {
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      background: rgba(8, 217, 214, 0.08);
-      border: 1px solid rgba(8, 217, 214, 0.28);
-      border-radius: 13px;
-      line-height: 1;
+    .series-body {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1;
+      padding: 18px 20px 20px;
     }
 
     .series-card h3 {
-      font-size: 1.22rem;
+      font-size: clamp(1.15rem, 1.6vw, 1.3rem);
       font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
       margin-bottom: 12px;
       color: var(--text-white);
     }
 
+    .series-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    /* Метка уровня CEFR — компактный приглушённый красный акцент */
     .series-level {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      align-self: flex-start;
-      font-size: 0.73rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.7px;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
-      padding: 5px 13px;
-      border-radius: 30px;
-      color: var(--accent-pink);
-      background: rgba(255, 46, 99, 0.1);
-      border: 1px solid rgba(255, 46, 99, 0.3);
-      margin-bottom: 16px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      color: #FF7D82;
+      background: rgba(229, 9, 20, 0.12);
+      border: 1px solid rgba(229, 9, 20, 0.22);
+    }
+
+    /* Ненавязчивая градация оттенков метки по уровням CEFR */
+    .series-level.level-a1 { background: rgba(229, 9, 20, 0.09); color: #FF9EA2; border-color: rgba(229, 9, 20, 0.18); }
+    .series-level.level-a2 { background: rgba(229, 9, 20, 0.12); color: #FF8A8F; border-color: rgba(229, 9, 20, 0.22); }
+    .series-level.level-b1 { background: rgba(229, 9, 20, 0.16); color: #FF767C; border-color: rgba(229, 9, 20, 0.26); }
+    .series-level.level-b2 { background: rgba(229, 9, 20, 0.2); color: #FF6369; border-color: rgba(229, 9, 20, 0.3); }
+    .series-level.level-c1 { background: rgba(229, 9, 20, 0.14); color: #FF8388; border-color: rgba(229, 9, 20, 0.24); }
+    .series-level.level-c2 { background: rgba(229, 9, 20, 0.24); color: #FF5158; border-color: rgba(229, 9, 20, 0.34); }
+
+    /* Жанр — нейтральная метка поверх второстепенного тона */
+    .series-genre {
+      display: inline-flex;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      padding: 5px 11px;
+      border-radius: 8px;
+      color: var(--text-muted);
+      background: var(--bg-dark-2);
+      border: 1px solid rgba(245, 245, 247, 0.08);
     }
 
     .series-tip {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
+      line-height: 1.68;
+      margin: 0;
+      padding-top: 14px;
+      border-top: 1px solid rgba(245, 245, 247, 0.06);
       margin-top: auto;
-      line-height: 1.55;
-      padding-left: 13px;
-      border-left: 2px solid var(--accent-cyan);
-      opacity: 0.95;
     }
 
     /* ============ СОВЕТЫ ============ */
     .tips-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
 
     .tip-card {
       background: var(--bg-card);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border-radius: 18px;
-      padding: 32px 24px;
-      border: 1px solid var(--border-soft);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      border-radius: 6px;
+      padding: 30px 26px;
+      border: 1px solid #333333;
+      transition: border-color 0.3s ease;
       text-align: left;
       position: relative;
-      box-shadow: var(--shadow-card);
     }
 
     .tip-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 46, 99, 0.4);
-      box-shadow:
-        var(--shadow-card),
-        0 0 20px rgba(255, 46, 99, 0.25);
+      border-color: var(--accent-red);
     }
 
     .tip-card .tip-number {
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       font-weight: 800;
       line-height: 1;
-      margin-bottom: 12px;
-      letter-spacing: -1px;
-      color: var(--accent-pink);
-      opacity: 0.9;
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+      color: var(--accent-red);
+      opacity: 0.85;
     }
 
     .tip-icon {
-      font-size: 1.4rem;
-      margin-bottom: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 14px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
+      width: 40px;
+      height: 40px;
       border-radius: 11px;
-      background: rgba(8, 217, 214, 0.08);
-      border: 1px solid rgba(8, 217, 214, 0.25);
+      background: var(--bg-dark-2);
+      border: 1px solid var(--border-soft);
+      color: var(--accent-red);
       line-height: 1;
     }
 
     .tip-card h3 {
-      font-size: 1.05rem;
+      font-size: 1.12rem;
       font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
       margin-bottom: 10px;
       color: var(--text-white);
     }
 
     .tip-card p {
-      font-size: 0.93rem;
+      font-size: 0.92rem;
       color: var(--text-muted);
-      line-height: 1.55;
+      line-height: 1.7;
     }
 
     /* ============ ФОРМА СВЯЗИ ============ */
     .contact-section {
-      padding-bottom: 110px;
+      padding-bottom: 120px;
     }
 
     .contact-form-wrapper {
       max-width: 640px;
       margin: 0 auto;
-      background: var(--bg-dark-2);
+      background: var(--bg-card);
       padding: 48px 44px;
-      border-radius: 20px;
-      border: 1px solid var(--border-soft);
-      box-shadow: var(--shadow-card);
+      border-radius: 6px;
+      border: 1px solid #333333;
       position: relative;
-      overflow: hidden;
-    }
-
-    .contact-form-wrapper::before {
-      content: '';
-      position: absolute;
-      top: -80px;
-      right: -80px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(255, 46, 99, 0.14) 0%, transparent 70%);
-      filter: blur(20px);
-      pointer-events: none;
     }
 
     .contact-form {
@@ -598,7 +664,7 @@
 
     .contact-form label {
       display: block;
-      font-size: 0.88rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--text-muted);
       margin-bottom: 8px;
@@ -609,12 +675,12 @@
     .contact-form input,
     .contact-form textarea {
       width: 100%;
-      padding: 15px 20px;
-      background: rgba(26, 26, 62, 0.7);
-      border: 1px solid var(--border-soft);
-      border-radius: 12px;
+      padding: 14px 18px;
+      background: #1A1A1A;
+      border: 1px solid #333333;
+      border-radius: 4px;
       color: var(--text-white);
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       font-family: inherit;
       outline: none;
       transition: border-color 0.25s ease, box-shadow 0.25s ease;
@@ -622,13 +688,15 @@
 
     .contact-form input::placeholder,
     .contact-form textarea::placeholder {
-      color: rgba(255, 255, 255, 0.4);
+      color: rgba(245, 245, 247, 0.42);
     }
 
     .contact-form input:focus,
-    .contact-form textarea:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 14px rgba(8, 217, 214, 0.3);
+    .contact-form input:focus-visible,
+    .contact-form textarea:focus,
+    .contact-form textarea:focus-visible {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.3);
     }
 
     .contact-form textarea {
@@ -642,49 +710,85 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      background: var(--accent-pink);
+      background: var(--accent-red);
       color: #fff;
-      font-weight: 700;
-      font-size: 1rem;
+      font-weight: 800;
+      font-size: 0.95rem;
       padding: 16px 34px;
-      border-radius: 50px;
-      border: 2px solid var(--accent-pink);
+      border-radius: 4px;
+      border: none;
       cursor: pointer;
       font-family: inherit;
-      transition: all 0.3s ease;
+      transition: background 0.3s ease, transform 0.3s ease;
       width: 100%;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      box-shadow: 0 8px 20px rgba(255, 46, 99, 0.3);
       margin-top: 8px;
     }
 
     .btn-submit:hover {
-      background: #e02655;
-      transform: translateY(-3px);
-      border-color: var(--accent-cyan);
-      box-shadow:
-        0 12px 28px rgba(255, 46, 99, 0.5),
-        0 0 22px rgba(8, 217, 214, 0.4);
+      background: var(--accent-hover);
+      transform: translateY(-2px);
     }
 
     .btn-submit:active {
-      transform: translateY(-1px);
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     /* ============ ФУТЕР ============ */
     .footer {
       text-align: center;
-      padding: 30px 0;
-      border-top: 1px solid rgba(8, 217, 214, 0.15);
+      padding: 36px 0;
+      border-top: 1px solid var(--border-color);
       font-size: 0.9rem;
       color: var(--text-muted);
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       position: relative;
       z-index: 2;
     }
 
+    /* Уважение к настройке prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .series-card,
+      .series-card .series-poster img,
+      .btn-primary,
+      .btn-secondary,
+      .btn-submit {
+        transition: none;
+      }
+
+      .series-card:hover,
+      .series-card:hover .series-poster img,
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .btn-submit:hover {
+        transform: none;
+      }
+    }
+
     /* ============ АДАПТИВНОСТЬ ============ */
+    /* Планшет: 2 колонки */
+    @media (max-width: 992px) {
+      .series-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 24px;
+      }
+    }
+
     @media (max-width: 900px) {
       .nav-links {
         gap: 20px;
@@ -697,26 +801,46 @@
       }
 
       section {
-        padding: 65px 0;
+        padding: var(--section-pad-mobile) 0;
+      }
+
+      .navbar {
+        padding: 10px 0;
       }
 
       .hero {
-        padding: 75px 0 65px;
+        padding: 72px 0 64px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.9rem, 8vw, 2.35rem);
+        text-wrap: wrap;
+      }
+
+      .hero-tag {
+        margin-bottom: 22px;
+        padding: 7px 14px;
+        font-size: 0.72rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        margin-bottom: 36px;
       }
 
       .nav-container {
         flex-direction: column;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
       }
 
       .nav-links {
         justify-content: center;
-        gap: 16px;
+        gap: 14px;
       }
 
       .nav-links a {
-        font-size: 0.9rem;
+        font-size: 0.84rem;
       }
 
       .contact-form-wrapper {
@@ -728,15 +852,14 @@
       }
 
       .about-card,
-      .series-card,
       .tip-card {
         padding: 26px 22px;
       }
 
-      .series-poster {
-        width: calc(100% + 44px);
-        margin: -26px -22px 20px;
-        height: 150px;
+      /* Мобильные: 1 колонка */
+      .series-grid {
+        grid-template-columns: 1fr;
+        gap: 22px;
       }
 
       .section-title {
@@ -744,8 +867,13 @@
       }
 
       .btn-primary {
-        padding: 14px 32px;
-        font-size: 0.95rem;
+        padding: 14px 30px;
+        font-size: 0.92rem;
+      }
+
+      .btn-secondary {
+        padding: 13px 28px;
+        font-size: 0.92rem;
       }
 
       .btn-submit {
@@ -761,7 +889,7 @@
   <nav class="navbar">
     <div class="container nav-container">
       <div class="logo">
-        <span class="logo-icon">🎬</span>
+        <span class="logo-icon"><i data-lucide="clapperboard"></i></span>
         Watch & Learn
       </div>
       <ul class="nav-links">
@@ -776,10 +904,10 @@
   <!-- ============ HERO ============ -->
   <section class="hero">
     <div class="container hero-content">
-      <span class="hero-tag">🎟️ Английский по сериалам</span>
+      <span class="hero-tag"><i data-lucide="tickets"></i> Английский по сериалам</span>
       <h1>Смотри сериалы — <span class="accent">говори свободно</span></h1>
       <p>Погружайся в живую речь, запоминай фразы в контексте и учи английский с удовольствием — без скучных учебников.</p>
-      <a href="#series" class="btn-primary">🍿 Подобрать сериал</a>
+      <a href="#series" class="btn-primary"><i data-lucide="circle-play"></i> Подобрать сериал</a>
     </div>
   </section>
 
@@ -787,24 +915,24 @@
   <section id="about">
     <div class="container">
       <h2 class="section-title">
-        <span class="title-icon">🎯</span>
+        <span class="title-icon"><i data-lucide="target"></i></span>
         Почему это <span class="accent">работает</span>
       </h2>
       <p class="section-subtitle">Сериалы дают то, чего не хватает учебникам: живой контекст, эмоции и настоящую речь.</p>
 
       <div class="about-grid">
         <div class="about-card">
-          <div class="icon">🎧</div>
+          <div class="icon"><i data-lucide="headphones"></i></div>
           <h3>Живая речь</h3>
           <p>Ты слышишь настоящие акценты, сленг и интонации — английский становится естественной частью восприятия.</p>
         </div>
         <div class="about-card">
-          <div class="icon">🧠</div>
+          <div class="icon"><i data-lucide="brain"></i></div>
           <h3>Контекст запоминается</h3>
           <p>Слова и фразы врезаются в память вместе с сюжетом и эмоциями героев — эффект гораздо сильнее зубрёжки.</p>
         </div>
         <div class="about-card">
-          <div class="icon">🔥</div>
+          <div class="icon"><i data-lucide="flame"></i></div>
           <h3>Мотивация и интерес</h3>
           <p>Смотреть любимый сериал — это удовольствие. А значит, ты будешь возвращаться к английскому снова.</p>
         </div>
@@ -816,7 +944,7 @@
   <section id="series">
     <div class="container">
       <h2 class="section-title">
-        <span class="title-icon">🎬</span>
+        <span class="title-icon"><i data-lucide="clapperboard"></i></span>
         Подборка <span class="accent">сериалов</span>
       </h2>
       <p class="section-subtitle">Шесть проверенных сериалов по шкале CEFR — от начального до продвинутого уровня.</p>
@@ -824,44 +952,74 @@
       <div class="series-grid">
         <div class="series-card">
           <div class="series-poster"><img src="pp.jpg" alt="Peppa Pig — постер сериала"></div>
-          <h3>Peppa Pig</h3>
-          <div class="series-level">A1 · Beginner</div>
-          <p class="series-tip">Медленная, чёткая речь и простейшая лексика. Идеальный старт для самых первых шагов.</p>
+          <div class="series-body">
+            <h3>Peppa Pig</h3>
+            <div class="series-meta">
+              <span class="series-level level-a1">A1 · Beginner</span>
+              <span class="series-genre">Мультсериал</span>
+            </div>
+            <p class="series-tip">Медленная, чёткая речь и простейшая лексика. Идеальный старт для самых первых шагов.</p>
+          </div>
         </div>
 
         <div class="series-card">
           <div class="series-poster"><img src="fr.jpg" alt="Friends — постер сериала"></div>
-          <h3>Friends</h3>
-          <div class="series-level">A2 · Elementary</div>
-          <p class="series-tip">Простой бытовой юмор и понятные диалоги. Отличный переход к живому английскому.</p>
+          <div class="series-body">
+            <h3>Friends</h3>
+            <div class="series-meta">
+              <span class="series-level level-a2">A2 · Elementary</span>
+              <span class="series-genre">Ситком</span>
+            </div>
+            <p class="series-tip">Простой бытовой юмор и понятные диалоги. Отличный переход к живому английскому.</p>
+          </div>
         </div>
 
         <div class="series-card">
           <div class="series-poster"><img src="st.png" alt="Stranger Things — постер сериала"></div>
-          <h3>Stranger Things</h3>
-          <div class="series-level">B1 · Intermediate</div>
-          <p class="series-tip">Ностальгия 80-х, диалоги подростков и научная фантастика. Затягивает и мотивирует.</p>
+          <div class="series-body">
+            <h3>Stranger Things</h3>
+            <div class="series-meta">
+              <span class="series-level level-b1">B1 · Intermediate</span>
+              <span class="series-genre">Фантастика</span>
+            </div>
+            <p class="series-tip">Ностальгия 80-х, диалоги подростков и научная фантастика. Затягивает и мотивирует.</p>
+          </div>
         </div>
 
         <div class="series-card">
           <div class="series-poster"><img src="br.jpg" alt="Brooklyn Nine-Nine — постер сериала"></div>
-          <h3>Brooklyn Nine-Nine</h3>
-          <div class="series-level">B2 · Upper-Int</div>
-          <p class="series-tip">Быстрый темп, шутки и профессиональная лексика. Отлично тренирует аудирование.</p>
+          <div class="series-body">
+            <h3>Brooklyn Nine-Nine</h3>
+            <div class="series-meta">
+              <span class="series-level level-b2">B2 · Upper-Int</span>
+              <span class="series-genre">Комедия</span>
+            </div>
+            <p class="series-tip">Быстрый темп, шутки и профессиональная лексика. Отлично тренирует аудирование.</p>
+          </div>
         </div>
 
         <div class="series-card">
           <div class="series-poster"><img src="sh.jpg" alt="Sherlock (BBC) — постер сериала"></div>
-          <h3>Sherlock (BBC)</h3>
-          <div class="series-level">C1 · Advanced</div>
-          <p class="series-tip">Быстрая речь, сложные термины и британский акцент. Для тех, кто хочет вызов.</p>
+          <div class="series-body">
+            <h3>Sherlock (BBC)</h3>
+            <div class="series-meta">
+              <span class="series-level level-c1">C1 · Advanced</span>
+              <span class="series-genre">Детектив</span>
+            </div>
+            <p class="series-tip">Быстрая речь, сложные термины и британский акцент. Для тех, кто хочет вызов.</p>
+          </div>
         </div>
 
         <div class="series-card">
           <div class="series-poster"><img src="cr.jpg" alt="The Crown — постер сериала"></div>
-          <h3>The Crown</h3>
-          <div class="series-level">C2 · Proficiency</div>
-          <p class="series-tip">Королевский английский, исторический контекст и богатый словарный запас. Для тех, кто хочет достичь совершенства.</p>
+          <div class="series-body">
+            <h3>The Crown</h3>
+            <div class="series-meta">
+              <span class="series-level level-c2">C2 · Proficiency</span>
+              <span class="series-genre">Драма</span>
+            </div>
+            <p class="series-tip">Королевский английский, исторический контекст и богатый словарный запас. Для тех, кто хочет достичь совершенства.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -871,7 +1029,7 @@
   <section id="tips">
     <div class="container">
       <h2 class="section-title">
-        <span class="title-icon">💡</span>
+        <span class="title-icon"><i data-lucide="lightbulb"></i></span>
         Как смотреть <span class="accent">с пользой</span>
       </h2>
       <p class="section-subtitle">Четыре простых правила, которые превратят просмотр в эффективную практику.</p>
@@ -879,25 +1037,25 @@
       <div class="tips-grid">
         <div class="tip-card">
           <div class="tip-number">01</div>
-          <div class="tip-icon">📝</div>
+          <div class="tip-icon"><i data-lucide="subtitles"></i></div>
           <h3>Смотри с субтитрами</h3>
           <p>Сначала английские, потом отключай — так ты связываешь звук и написание.</p>
         </div>
         <div class="tip-card">
           <div class="tip-number">02</div>
-          <div class="tip-icon">🗣️</div>
+          <div class="tip-icon"><i data-lucide="mic"></i></div>
           <h3>Повторяй вслух</h3>
           <p>Пауза и повтор — имитация акцента и интонации ускоряет прогресс.</p>
         </div>
         <div class="tip-card">
           <div class="tip-number">03</div>
-          <div class="tip-icon">📓</div>
+          <div class="tip-icon"><i data-lucide="notebook-pen"></i></div>
           <h3>Записывай слова</h3>
           <p>Выписывай незнакомые выражения и возвращайся к ним через день.</p>
         </div>
         <div class="tip-card">
           <div class="tip-number">04</div>
-          <div class="tip-icon">⏱️</div>
+          <div class="tip-icon"><i data-lucide="timer"></i></div>
           <h3>Смотри по 20–30 минут</h3>
           <p>Короткие сессии каждый день эффективнее, чем редкие марафоны.</p>
         </div>
@@ -909,7 +1067,7 @@
   <section id="contacts" class="contact-section">
     <div class="container">
       <h2 class="section-title">
-        <span class="title-icon">✉️</span>
+        <span class="title-icon"><i data-lucide="mail"></i></span>
         Свяжитесь <span class="accent">с нами</span>
       </h2>
       <p class="section-subtitle">Есть вопрос, идея или любимый сериал, которого нет в подборке? Напишите нам.</p>
@@ -928,7 +1086,7 @@
             <label for="message">Сообщение</label>
             <textarea id="message" name="message" placeholder="Расскажите, что вас интересует..." required></textarea>
           </div>
-          <button type="submit" class="btn-submit">📨 Отправить</button>
+          <button type="submit" class="btn-submit"><i data-lucide="send"></i> Отправить</button>
         </form>
       </div>
     </div>
@@ -937,9 +1095,19 @@
   <!-- ============ ФУТЕР ============ -->
   <footer class="footer">
     <div class="container">
-      © 2025 Watch & Learn — учи английский с удовольствием. 🎬
+      © 2025 Watch & Learn — учи английский с удовольствием. <i data-lucide="clapperboard"></i>
     </div>
   </footer>
+
+  <!-- ============ ЕДИНЫЙ НАБОР ИКОНОК (LUCIDE) ============ -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    // Инициализация иконок Lucide: элементы <i data-lucide="..."> заменяются на svg.
+    // Иконки декоративные — скрываем их от скринридеров (aria-hidden), тексты дают подписи.
+    if (window.lucide) {
+      lucide.createIcons({ attrs: { 'aria-hidden': 'true' } });
+    }
+  </script>
 
   <!-- ============ SCROLL-SPY: подсветка активного раздела ============ -->
   <script>
