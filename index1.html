@@ -475,6 +475,8 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
+      position: relative;
+      z-index: 1;
     }
 
     /* Белые карточки с мягким скруглением и лёгкой тенью */
@@ -488,12 +490,44 @@
       flex-direction: column;
       height: 100%;
       position: relative;
+      z-index: 1;
       overflow: hidden;
     }
 
     .series-card:hover {
       transform: translateY(-6px);
       box-shadow: var(--shadow-hover);
+    }
+
+    /* Декоративные звёзды на фоне подборки сериалов */
+    .bg-star {
+      position: absolute;
+      z-index: 0;
+      mix-blend-mode: screen;
+      opacity: 0.15;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .bg-star.s1 {
+      width: 150px;
+      top: 70px;
+      left: -25px;
+      transform: rotate(45deg);
+    }
+
+    .bg-star.s2 {
+      width: 80px;
+      top: 42%;
+      right: -20px;
+      transform: rotate(-35deg);
+    }
+
+    .bg-star.s3 {
+      width: 120px;
+      bottom: 60px;
+      left: 9%;
+      transform: rotate(65deg);
     }
 
     /* Постер сериала: единый размер 16:9, без искажений */
@@ -962,6 +996,9 @@
 
   <!-- ============ СЕРИАЛЫ ============ -->
   <section id="series">
+    <img class="bg-star s1" src="Рисунок1.png" alt="" aria-hidden="true">
+    <img class="bg-star s2" src="Рисунок1.png" alt="" aria-hidden="true">
+    <img class="bg-star s3" src="Рисунок1.png" alt="" aria-hidden="true">
     <div class="container">
       <h2 class="section-title">
         <span class="title-icon"><i data-lucide="clapperboard"></i></span>
